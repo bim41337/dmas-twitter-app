@@ -1,7 +1,7 @@
 'use strict';
 
 const Hapi = require('hapi');
-// require('./app/models/db');
+require('./app/models/db');
 
 let server = new Hapi.Server();
 
@@ -27,10 +27,10 @@ server.register([require('inert'), require('vision'), require('hapi-auth-cookie'
 
   server.auth.strategy('standard', 'cookie', {
     password: 'markus-biersack-Twitter-app_c00kie-p@ssword',
-    cookie: 'donation-cookie',
+    cookie: 'bim41337-tweeter-cookie',
     isSecure: false,
     ttl: 24 * 60 * 60 * 1000,
-    redirectTo: '/',
+    redirectTo: '/login',
   });
 
   server.auth.default({

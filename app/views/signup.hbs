@@ -1,0 +1,42 @@
+{{> welcomemenu _id="signup-item" }}
+
+<section class="ui raised segment">
+  <div class="ui middle aligned grid">
+    <div class="ui ten wide column">
+      <div class="ui raised fluid form segment">
+        <form action="/register" method="POST">
+          <h3 class="ui header">Sign up to Tweeter</h3>
+          <div class="two fields">
+            <div class="field">
+              <label>Nickname</label>
+              <input placeholder="Your nickname" type="text" name="nickname" value="{{formData.nickname}}">
+            </div>
+          </div>
+          <div class="field">
+            <label>E-Mail</label>
+            <input placeholder="E-Mail Address" type="text" name="email" value="{{formData.email}}">
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" name="password" value="{{formData.password}}">
+          </div>
+          <button class="ui blue submit button">Submit</button>
+        </form>
+        {{> formerror }}
+      </div>
+    </div>
+    <aside class="ui six wide column">
+      <div class="ui centered raised card">
+        <div class="image">
+          <img src="images/logo-1000.png" class="ui medium image">
+        </div>
+        <div class="content">
+          <span class="header">Tweeter</span>
+          <div class="description">
+            Lets you connect and share
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>

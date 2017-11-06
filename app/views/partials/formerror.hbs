@@ -1,0 +1,19 @@
+{{#if errors}}
+  <div class="ui negative message transition">
+    <i class="close icon"></i>
+    <div class="header">
+      There was some errors with your submission
+    </div>
+    <ul class="list">
+      {{#each errors}}
+        <li>{{message}}</li>
+      {{/each}}
+    </ul>
+  </div>
+{{/if}}
+
+<script type="text/javascript">
+  $(".close.icon").click(function () {
+    $(this).parent(".message").fadeOut("fast");
+  });
+</script>

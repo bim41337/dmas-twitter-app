@@ -1,0 +1,20 @@
+{{> welcomemenu _id="login-item" }}
+
+<section class="ui middle aligned raised segment">
+    <div class="ui fluid form">
+      <div class="ui raised segment">
+        <form action="/login" method="POST">
+          <h3 class="ui header">Log in to Tweeter</h3>
+          <div class="field">
+            <label>Email</label> <input placeholder="Email" type="text"
+                                        name="email" value="{{formData.email}}">
+          </div>
+          <div class="field">
+            <label>Password</label> <input type="password" name="password" value="{{formData.password}}">
+          </div>
+          <button class="ui blue submit button">Login</button>
+        </form>
+        {{> formerror }}
+      </div>
+    </div>
+</section>
