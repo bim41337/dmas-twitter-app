@@ -1,7 +1,17 @@
 'use strict';
 
 const Hapi = require('hapi');
+const Handlebars = require('handlebars');
 require('./app/models/db');
+
+Handlebars.registerHelper('formatDate', datetime => {
+  const Moment = require('moment-timezone');
+  if (datetime instanceof Date) {
+    return Moment(datetime).tz('Europe/Berlin').format('DD.MM.YYYY HH:mm');
+  } else {
+    return '';
+  }
+});
 
 let server = new Hapi.Server();
 

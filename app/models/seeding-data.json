@@ -1,0 +1,77 @@
+{
+  "_dependencies": {
+    "moment": "moment-timezone"
+  },
+  "users": {
+    "_model": "User",
+    "admin": {
+      "nickname": "InitialAdmin",
+      "email": "admin@user.de",
+      "password": "1234",
+      "followings": []
+    },
+    "hardfield": {
+      "nickname": "JamesHardfield",
+      "email": "james@hardfield.met",
+      "password": "1234",
+      "followings": [
+        "->users.hardmett"
+      ]
+    },
+    "hardmett": {
+      "nickname": "KirkHardmett",
+      "email": "kirk@hardmett.com",
+      "password": "1234",
+      "followings": [
+        "->users.hardfield",
+        "->users.silverflame"
+      ]
+    },
+    "silverflame": {
+      "nickname": "SilverFlame",
+      "email": "silver@flame.de",
+      "password": "1234",
+      "followings": [
+        "->users.hardfield",
+        "->users.hardmett",
+        "->users.admin"
+      ]
+    }
+  },
+  "tweets": {
+    "_model": "Tweet",
+    "hellyeah": {
+      "message": "Hell yeah! Looking forward to rocking Germany in April!",
+      "creation": "=new Date(2017, 11, 02, 01, 10)",
+      "user": "->users.hardfield"
+    },
+    "greatshow": {
+      "message": "Great show in Nickelsdorf, Australia! The family really brought it on. Thank you, good night!",
+      "creation": "=new Date(2017, 10, 31, 22, 47)",
+      "user": "->users.hardfield"
+    },
+    "jamesperformance": {
+      "message": "We all did a great job at the show last night. But James' performance was just outstanding! It came to life!",
+      "creation": "=new Date(2017, 11, 01, 14, 14)",
+      "user": "->users.hardmett"
+    },
+    "randompost1": {
+      "message": "Wenn du denkst, du denkst ... dann denkst du nur, du denkst!",
+      "creation": "=new Date(2017, 11, 09, 23, 59)",
+      "user": "->users.silverflame"
+    },"gotcite": {
+      "message": "When the snow falls, and the wild winds blow: The lone wolf dies, but the pack survives.",
+      "creation": "=new Date(2017, 10, 29, 13, 37)",
+      "user": "->users.silverflame"
+    },"gotover": {
+      "message": "GoT's prefinal season ended with a boom. Looking forward to the final moments of the show :D",
+      "creation": "=new Date(2017, 11, 01, 21, 02)",
+      "user": "->users.silverflame"
+    },
+    "upandrunning": {
+      "message": "The app is now up and running. Start sharing, everybody!",
+      "creation": "=new Date(2017, 10, 28, 20, 14)",
+      "user": "->users.admin"
+    }
+  }
+}

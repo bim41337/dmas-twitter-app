@@ -37,9 +37,42 @@ exports.authenticate = {
 
   auth: false,
 
+  validate: {
+
+    payload: {
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    },
+
+    failAction: function (request, reply, source, error) {
+      reply.view('login', {
+        title: 'ERROR: Log in to Tweeter',
+        errors: error.data.details,
+        formData: request.payload,
+      }).code(400);
+    },
+
+    options: {
+      abortEarly: false,
+    },
+
+  },
+
   handler: function (request, reply) {
-    console.log('Login post method reached');
-    reply.redirect('/');
+    const user = request.payload;
+    User.findOne({ email: user.email }).then(foundUser => {
+      if (foundUser && foundUser.password === user.password) {
+        request.cookieAuth.set({
+          loggedIn: true,
+          loggedInUser: user.email,
+        });
+        reply.redirect('/home');
+      } else {
+        reply.redirect('/signup');
+      }
+    }).catch(err => {
+      reply.redirect('/');
+    });
   },
 
 };

@@ -14,21 +14,18 @@ mongoose.connect(dbURI);
 
 mongoose.connection.on('connected', function () {
   console.log('Mongoose connected to ' + dbURI);
-  /*
   if (process.env.NODE_ENV != 'production') {
     let seeder = require('mongoose-seeder');
-    const data = require('./data.json');
-    const Donation = require('./donation');
+    const data = require('./seeding-data.json');
     const User = require('./user');
-    const Candidate = require('./candidate.js');
+    const Tweet = require('./tweet');
     seeder.seed(data, { dropDatabase: false, dropCollections: true }).then(dbData => {
-      console.log('preloading Test Data');
+      console.log('Seeding database ...');
       console.log(dbData);
     }).catch(err => {
       console.log(error);
     });
   }
-  */
 });
 
 mongoose.connection.on('error', function (err) {

@@ -1,0 +1,19 @@
+<nav class="ui main menu">
+    <div class="header item" href="/">
+      <img class="logo" src="images/logo-128.png" />
+      <span class="custom-main-logo-text">Tweeter</span>
+    </div>
+  <div class="header item">
+    <i class="user circle outline large icon"></i>
+    {{user.nickname}}
+  </div>
+  <div class="right menu">
+    <a id="home-item" class="header item" href="/home">Home</a>
+    <a id="settings-item" class="item" href="/settings">Settings</a>
+    <a id="logout-item" class="item" href="/logout">Log Out</a>
+  </div>
+</nav>
+
+<script type="text/javascript">
+  $("#{{_id}}").addClass("active item");
+</script>
