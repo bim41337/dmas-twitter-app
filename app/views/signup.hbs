@@ -10,7 +10,7 @@
           <div class="two fields">
             <div class="field">
               <label>Nickname</label>
-              <input placeholder="Your nickname" type="text" name="nickname" value="{{formData.nickname}}">
+              <input placeholder="Your nickname" type="text" name="nickname" value="{{formData.nickname}}" autofocus>
             </div>
           </div>
           <div class="field">
@@ -21,7 +21,7 @@
             <label>Password</label>
             <input type="password" name="password" value="{{formData.password}}">
           </div>
-          <button class="ui blue submit button">Submit</button>
+          <button class="ui orange submit button">Submit</button>
         </form>
         {{> formerror }}
       </div>

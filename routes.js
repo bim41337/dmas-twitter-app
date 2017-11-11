@@ -15,7 +15,12 @@ module.exports = [
 
     // Registered routes
   { method: 'GET', path: '/home', config: Tweets.home },
+  { method: 'GET', path: '/followings', config: Tweets.followings },
+  { method: 'GET', path: '/settings', config: Tweets.viewSettings },
+  { method: 'POST', path: '/settings', config: Tweets.updateSettings },
   { method: 'GET', path: '/logout', config: Tweets.logout },
+  { method: 'POST', path: '/makeTweet', config: Tweets.makeTweet },
+  { method: 'POST', path: '/removeTweet', config: Tweets.removeTweet },
 
     // Assets
   {

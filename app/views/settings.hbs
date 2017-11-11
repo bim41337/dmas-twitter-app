@@ -1,0 +1,35 @@
+{{> mainmenu _id="settings-item" }}
+
+<section class="ui raised segment">
+  <div class="ui two column middle aligned grid">
+
+    <div class="ui column">
+      <div class="ui raised fluid form segment">
+        <form action="/settings" method="POST">
+          <h3 class="ui header">Account details</h3>
+          <div class="two fields">
+            <div class="field">
+              <label>Nickname</label>
+              <input value="{{user.nickname}}" type="text" name="nickname">
+            </div>
+          </div>
+          <div class="field">
+            <label>E-Mail</label>
+            <input value="{{user.email}}" type="text" name="email">
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input value="{{user.password}}" type="password" name="password">
+          </div>
+          <button class="ui orange submit button">Save</button>
+        </form>
+        {{> formerror }}
+      </div>
+    </div>
+
+    <aside class="ui column">
+      {{> tweeter-card }}
+    </aside>
+
+  </div>
+</section>

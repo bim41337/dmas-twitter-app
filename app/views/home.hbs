@@ -3,6 +3,34 @@
 <div class="ui raised segment">
   {{> submenu _id="home-sub-item"}}
 
-  {{> tweet-list }}
+  <div class="ui basic segment">
+    <div class="ui grid">
+
+      <div class="ui ten wide column">
+        {{> tweet-list }}
+      </div>
+
+      <div class="ui six wide centered column">
+        {{> tweet-form }}
+      </div>
+
+    </div>
+  </div>
 
 </div>
+
+<script type="text/javascript">
+  $('#tweet-message').on('input', function () {
+    const className = 'disabled';
+    const button = $('#tweet-button');
+    const label = $('#tweet-label');
+    const inputLength = $(this).val().trim().length;
+
+    label.text(inputLength + ' / 140');
+    if (inputLength > 0) {
+      button.removeClass(className);
+    } else {
+      button.addClass(className);
+    }
+  });
+</script>

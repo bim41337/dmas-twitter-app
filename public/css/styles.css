@@ -5,3 +5,11 @@
 .custom-main-logo-text {
     margin-left: 0.5em;
 }
+
+article.tweet {
+    min-width: 15em;
+}
+
+#tweet-form {
+    min-width: 20em;
+}

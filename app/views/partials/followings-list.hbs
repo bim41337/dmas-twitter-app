@@ -1,0 +1,17 @@
+{{#if tweets}}
+  <div class="ui compact segments" id="tweets-content">
+    {{#each tweets}}
+      <article class="ui compact segment tweet">
+        <h4 class="dividing header">{{user.nickname}}</h4>
+        <div class="ui top right attached label">
+          {{formatDate creation}}
+        </div>
+        <div class="padded segment">
+          {{message}}
+        </div>
+      </article>
+    {{/each}}
+  </div>
+{{else}}
+  {{> no-content }}
+{{/if}}

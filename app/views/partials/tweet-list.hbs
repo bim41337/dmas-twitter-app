@@ -1,18 +1,31 @@
 {{#if tweets}}
-  <div class="ui compact segments">
-    {{#each tweets}}
-      <article class="ui compact segment">
-        <h4 class="dividing header">{{user.nickname}}</h4>
-        <span class="ui top right attached label">{{formatDate creation}}</span>
-        <div class="padded segment">
-          {{message}}
+  {{#each tweets}}
+    <article class="ui compact segment tweet">
+
+      <h5 class="ui dividing header">
+        <strong>{{user.nickname}}</strong>
+        <div class="sub header">
+          {{formatDate creation}}
         </div>
-      </article>
-    {{/each}}
-  </div>
+      </h5>
+
+      <a class="ui top right attached label tweet-remove" data-id="{{_id}}">
+        <i class="orange remove icon"></i>
+      </a>
+
+      {{message}}
+
+    </article>
+  {{/each}}
+  <script type="text/javascript">
+    $(".tweet a.tweet-remove").click(function () {
+      $(this).parents('.tweet').fadeOut('slow');
+      const itemId = $(this).data('id');
+      $.post('/removeTweet', {
+        id: itemId
+      });
+    });
+  </script>
 {{else}}
-  <div class="ui compact segment">
-    <i class="meh big icon"></i>
-    No tweets available
-  </div>
+  {{> no-content }}
 {{/if}}

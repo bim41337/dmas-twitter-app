@@ -3,12 +3,17 @@
 const Joi = require('joi');
 const User = require('../models/user');
 
+const titleWelcome = 'Welcome to Tweeter';
+const titleLogin = 'Log in to Tweeter';
+const titleSignup = 'Sign up to Tweeter';
+
 exports.welcome = {
 
   auth: false,
 
   handler: function (request, reply) {
-    reply.view('welcome', { title: 'Welcome to Tweeter' });
+
+    reply.view('welcome', { title: titleWelcome });
   },
 
 };
@@ -18,7 +23,7 @@ exports.login = {
   auth: false,
 
   handler: function (request, reply) {
-    reply.view('login', { title: 'Log in to Tweeter' });
+    reply.view('login', { title: titleLogin });
   },
 
 };
@@ -28,7 +33,7 @@ exports.signup = {
   auth: false,
 
   handler: function (request, reply) {
-    reply.view('signup', { title: 'Sign up to Tweeter' });
+    reply.view('signup', { title: titleSignup });
   },
 
 };
@@ -46,7 +51,7 @@ exports.authenticate = {
 
     failAction: function (request, reply, source, error) {
       reply.view('login', {
-        title: 'ERROR: Log in to Tweeter',
+        title: titleLogin,
         errors: error.data.details,
         formData: request.payload,
       }).code(400);
@@ -68,7 +73,10 @@ exports.authenticate = {
         });
         reply.redirect('/home');
       } else {
-        reply.redirect('/signup');
+        reply.view('login', {
+          title: titleLogin,
+          errors: [{ message: 'Authentication failed! Please try again or sign up to Tweeter' }],
+        });
       }
     }).catch(err => {
       reply.redirect('/');
@@ -91,7 +99,7 @@ exports.register = {
 
     failAction: function (request, reply, source, error) {
       reply.view('signup', {
-        title: 'ERROR: Sign up to Tweeter',
+        title: titleSignup,
         errors: error.data.details,
         formData: request.payload,
       }).code(400);
@@ -104,12 +112,12 @@ exports.register = {
   },
 
   handler: function (request, reply) {
-    const userNickname = request.payload.nickname;
-    User.count({ nickname: userNickname }).then(count => {
+    const user = request.payload;
+    User.count({ email: user.email }).then(count => {
       if (count > 0) {
         reply.view('signup', {
-          title: 'ERROR: Sign up to Tweeter',
-          errors: [{ message: 'User already exists on Tweeter' }],
+          title: titleSignup,
+          errors: [{ message: 'User seems to already exists on Tweeter' }],
           formData: request.payload,
         }).code(400);
         return false;
