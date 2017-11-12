@@ -1,0 +1,26 @@
+{{> mainmenu _id="home-item" }}
+
+<div class="ui raised segment">
+  {{> submenu _id="search-user-item"}}
+
+  <div class="ui basic segment">
+    <div class="ui grid">
+
+        <div class="ui six wide column">
+          <div class="ui raised fluid form segment">
+            <form action="/searchUser" method="post">
+              <h3 class="ui header">Find other tweeters</h3>
+              <div class="field">
+                <label>Nickname</label>
+                <input type="text" name="nickname" value="{{formData.nickname}}" autofocus>
+              </div>
+              <button class="ui orange submit button">Submit</button>
+            </form>
+            {{> formerror }}
+          </div>
+        </div>
+
+    </div>
+  </div>
+
+</div>

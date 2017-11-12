@@ -8,6 +8,7 @@ const User = require('../models/user');
 const Tweet = require('../models/tweet');
 
 const titleHome = 'Your tweets - Tweeter';
+const titleSearchUser = 'Search users - Tweeter';
 const titleFollowings = 'Followed tweets - Tweeter';
 const titleSettings = 'Edit account details - Tweeter';
 
@@ -21,7 +22,7 @@ exports.home = {
       }
 
       Tweet.find({ user: foundUser._id })
-          .sort('-creation')
+          .sort('-creation user.nickname')
           .populate('user').then(userTweets => {
         reply.view('home', {
           title: titleHome,
@@ -38,10 +39,97 @@ exports.home = {
 
 };
 
+exports.searchUser = {
+
+  handler: function (request, reply) {
+    const loggedInUserEmail = request.auth.credentials.loggedInUser;
+    User.findOne({ email: loggedInUserEmail }).then(foundUser => {
+      if (!foundUser) {
+        throw new Error('User could not be found in database (' + loggedInUserEmail + ')');
+      }
+
+      reply.view('search-user', {
+        title: titleSearchUser,
+        user: foundUser,
+      });
+    });
+  },
+
+};
+
+exports.browseUsers = {
+
+  validate: {
+
+    payload: {
+      nickname: Joi.string().required(),
+    },
+
+    failAction: function (request, reply, source, error) {
+      const loggedInUserEmail = request.auth.credentials.loggedInUser;
+      User.findOne({ email: loggedInUserEmail }).then(foundUser => {
+        if (!foundUser) {
+          throw new Error('User could not be found in database (' + loggedInUserEmail + ')');
+        }
+
+        const formData = request.payload;
+        reply.view('search-user', {
+          title: titleSearchUser,
+          errors: error.data.details,
+          user: foundUser,
+          formData: formData,
+        }).code(400);
+      });
+    },
+
+    options: {
+      abortEarly: false,
+    },
+
+  },
+
+  handler: function (request, reply) {
+    const loggedInUserEmail = request.auth.credentials.loggedInUser;
+    User.findOne({ email: loggedInUserEmail }).then(foundUser => {
+      if (!foundUser) {
+        throw new Error('User could not be found in database (' + loggedInUserEmail + ')');
+      }
+
+      return foundUser;
+    }).then(currentUser => {
+      const searchString = request.payload.nickname;
+      User.find({
+        nickname: new RegExp(searchString, 'i'),
+        email: { $ne: loggedInUserEmail },
+      }).sort('nickname').then(foundUsers => {
+
+        reply.view('browse-users', {
+          title: titleSearchUser,
+          user: currentUser,
+          users: foundUsers,
+        });
+      });
+    }).catch(err => {
+      console.log(err);
+      reply.redirect('/home');
+    });
+  },
+
+};
+
+exports.viewUser = {
+
+  handler: function (request, reply) {
+    console.log(`Passed User-ID ${request.params.id}`);
+    reply.redirect('/home');
+  },
+
+};
+
 exports.followings = {
 
   handler: function (request, reply) {
-    let currentUserMail = request.auth.credentials.loggedInUser;
+    const currentUserMail = request.auth.credentials.loggedInUser;
     User.findOne({ email: currentUserMail }).then(foundUser => {
       if (!foundUser) {
         throw new Error('User could not be found in database (' + currentUserMail + ')');
@@ -77,7 +165,11 @@ exports.viewSettings = {
         throw new Error('User could not be found in database (' + currentUserMail + ')');
       }
 
-      reply.view('settings', { title: titleSettings, user: foundUser });
+      reply.view('settings', {
+        title: titleSettings,
+        user: foundUser,
+        formData: foundUser,
+      });
     }).catch(err => {
       console.log(err);
       reply.redirect('/');
@@ -97,12 +189,20 @@ exports.updateSettings = {
     },
 
     failAction: function (request, reply, source, error) {
-      let formData = request.payload;
-      reply.view('settings', {
-        title: titleSettings,
-        errors: error.data.details,
-        user: formData,
-      }).code(400);
+      const loggedInUserEmail = request.auth.credentials.loggedInUser;
+      User.findOne({ email: loggedInUserEmail }).then(foundUser => {
+        if (!foundUser) {
+          throw new Error('User could not be found in database (' + loggedInUserEmail + ')');
+        }
+
+        const formData = request.payload;
+        reply.view('settings', {
+          title: titleSettings,
+          errors: error.data.details,
+          user: foundUser,
+          formData: formData,
+        }).code(400);
+      });
     },
 
     options: {
@@ -113,7 +213,7 @@ exports.updateSettings = {
 
   handler: function (request, reply) {
     const editedUser = request.payload;
-    let loggedInUserEmail = request.auth.credentials.loggedInUser;
+    const loggedInUserEmail = request.auth.credentials.loggedInUser;
 
     User.findOne({ email: loggedInUserEmail }).then(user => {
       if (!user) {

@@ -1,0 +1,33 @@
+{{> mainmenu _id="home-item" }}
+
+<div class="ui raised segment">
+  {{> submenu _id="search-user-item"}}
+
+  {{#if users}}
+    <div class="ui basic segment">
+      <div class="ui stackable cards">
+        {{#each users}}
+
+          <div class="card">
+            <div class="content">
+              <div class="header">{{nickname}}</div>
+              <div class="meta">{{email}}</div>
+            </div>
+            <div class="extra content">
+              <form action="/viewUser/{{_id}}" method="post">
+                <button type="submit" class="fluid ui orange labeled icon button">
+                  <i class="arrow circle outline right large icon"></i>
+                  View timeline
+                </button>
+              </form>
+            </div>
+          </div>
+
+        {{/each}}
+      </div>
+    </div>
+  {{else}}
+    {{> no-content subject="No users found" }}
+  {{/if}}
+
+</div>

@@ -42,7 +42,7 @@
     "_model": "Tweet",
     "hellyeah": {
       "message": "Hell yeah! Looking forward to rocking Germany in April!",
-      "creation": "=moment(new Date(2017, 11, 02, 01, 10))",
+      "creation": "=moment(new Date(2017, 11, 2, 1, 10))",
       "user": "->users.hardfield"
     },
     "greatshow": {
@@ -52,12 +52,12 @@
     },
     "jamesperformance": {
       "message": "We all did a great job at the show last night. But James' performance was just outstanding! It came to life!",
-      "creation": "=moment(new Date(2017, 11, 01, 14, 14))",
+      "creation": "=moment(new Date(2017, 11, 1, 14, 14))",
       "user": "->users.hardmett"
     },
     "randompost1": {
       "message": "Wenn du denkst, du denkst ... dann denkst du nur, du denkst!",
-      "creation": "=moment(new Date(2017, 11, 09, 23, 59))",
+      "creation": "=moment(new Date(2017, 11, 9, 23, 59))",
       "user": "->users.silverflame"
     },"gotcite": {
       "message": "When the snow falls, and the wild winds blow: The lone wolf dies, but the pack survives.",
@@ -65,7 +65,7 @@
       "user": "->users.silverflame"
     },"gotover": {
       "message": "GoT's prefinal season ended with a boom. Looking forward to the final moments of the show :D",
-      "creation": "=moment(new Date(2017, 11, 01, 21, 02))",
+      "creation": "=moment(new Date(2017, 11, 1, 21, 2))",
       "user": "->users.silverflame"
     },
     "upandrunning": {

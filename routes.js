@@ -21,6 +21,9 @@ module.exports = [
   { method: 'GET', path: '/logout', config: Tweets.logout },
   { method: 'POST', path: '/makeTweet', config: Tweets.makeTweet },
   { method: 'POST', path: '/removeTweet', config: Tweets.removeTweet },
+  { method: 'GET', path: '/searchUser', config: Tweets.searchUser },
+  { method: 'POST', path: '/searchUser', config: Tweets.browseUsers },
+  { method: 'POST', path: '/viewUser/{id}', config: Tweets.viewUser },
 
     // Assets
   {
