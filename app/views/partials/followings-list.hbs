@@ -15,3 +15,7 @@
 {{else}}
   {{> no-content subject="No tweets available" }}
 {{/if}}
+
+<script type="text/javascript">
+  $('#tweets-content article:nth-child(even)').addClass('secondary');
+</script>

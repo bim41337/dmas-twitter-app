@@ -2,6 +2,7 @@
 const Assets = require('./app/controllers/assets');
 const Welcome = require('./app/controllers/welcome');
 const Tweets = require('./app/controllers/tweets');
+const Users = require('./app/controllers/users');
 
 // Routes
 module.exports = [
@@ -16,14 +17,16 @@ module.exports = [
     // Registered routes
   { method: 'GET', path: '/home', config: Tweets.home },
   { method: 'GET', path: '/followings', config: Tweets.followings },
-  { method: 'GET', path: '/settings', config: Tweets.viewSettings },
-  { method: 'POST', path: '/settings', config: Tweets.updateSettings },
-  { method: 'GET', path: '/logout', config: Tweets.logout },
+  { method: 'GET', path: '/settings', config: Users.viewSettings },
+  { method: 'POST', path: '/settings', config: Users.updateSettings },
+  { method: 'GET', path: '/logout', config: Users.logout },
   { method: 'POST', path: '/makeTweet', config: Tweets.makeTweet },
   { method: 'POST', path: '/removeTweet', config: Tweets.removeTweet },
-  { method: 'GET', path: '/searchUser', config: Tweets.searchUser },
-  { method: 'POST', path: '/searchUser', config: Tweets.browseUsers },
-  { method: 'POST', path: '/viewUser/{id}', config: Tweets.viewUser },
+  { method: 'GET', path: '/searchUser', config: Users.searchUser },
+  { method: 'POST', path: '/searchUser', config: Users.browseUsers },
+  { method: 'GET', path: '/viewUser', config: Users.viewUser },
+  { method: 'POST', path: '/followUser', config: Users.followUser },
+  { method: 'POST', path: '/unfollowUser', config: Users.unfollowUser },
 
     // Assets
   {

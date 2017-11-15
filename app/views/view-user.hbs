@@ -1,0 +1,20 @@
+{{> mainmenu _id="home-item" }}
+
+<div class="ui raised segment">
+  {{> submenu _id="search-user-sub-item"}}
+
+  <div class="ui basic segment">
+    <div class="ui grid">
+
+      <div class="ui ten wide column">
+        {{> tweet-list }}
+      </div>
+
+      <div class="ui six wide centered column">
+        {{> user-card viewOpt=true }}
+      </div>
+
+    </div>
+  </div>
+
+</div>

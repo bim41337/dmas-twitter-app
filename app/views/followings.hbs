@@ -3,10 +3,37 @@
 <div class="ui raised segment">
   {{> submenu _id="follow-sub-item"}}
 
-    <div class="ui basic segment">
+  <div class="ui basic segment">
+    <div class="ui grid">
 
-      {{> followings-list }}
+      <div class="ui ten wide column">
+        {{> followings-list }}
+      </div>
+
+      <div class="ui six wide centered column">
+        <div class="ui raised segment">
+
+          <h4 class="ui header">Following</h4>
+          {{#if user.followings}}
+            <div class="ui middle aligned divided selection link list">
+              {{#each user.followings}}
+                <a class="item" href="/viewUser?userId={{_id}}">
+                  <i class="user circle outline large icon"></i>
+                  <div class="content">
+                    {{nickname}}
+                    <i class="angle double right large right floated icon"></i>
+                  </div>
+                </a>
+              {{/each}}
+            </div>
+          {{else}}
+            <strong>---</strong>
+          {{/if}}
+
+        </div>
+      </div>
 
     </div>
+  </div>
 
 </div>

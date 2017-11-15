@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const moment = require('moment-timezone');
 
 const tweetSchema = mongoose.Schema({
   message: {
@@ -10,7 +11,7 @@ const tweetSchema = mongoose.Schema({
   },
   creation: {
     type: mongoose.Schema.Types.Date,
-    min: Date('2017-10-28'),
+    min: moment('2017-10-28'),
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

@@ -1,0 +1,47 @@
+<div class="ui card">
+  {{#if searchOpt}}
+    <div class="content">
+      <i class="right floated user circle big icon"></i>
+      <div class="header">{{resultUser.nickname}}</div>
+      <div class="meta">{{resultUser.email}}</div>
+    </div>
+    <div class="extra content">
+      <form action="/viewUser" method="get">
+        <input type="hidden" name="userId" value="{{resultUser._id}}" />
+        <button type="submit" class="fluid ui orange labeled icon button">
+          <i class="arrow circle outline right large icon"></i>
+          View timeline
+        </button>
+      </form>
+    </div>
+  {{else if viewOpt}}
+    <div class="content">
+      <i class="right floated user circle big icon"></i>
+      <div class="header">{{viewedUser.nickname}}</div>
+      <div class="meta">{{viewedUser.email}}</div>
+      <div class="description">
+        <i class="twitter icon"></i>
+        {{viewedUser.followers}}
+      </div>
+    </div>
+    <div class="extra centered content">
+      {{#if isFollowed}}
+        <form action="/unfollowUser" method="post">
+          <input type="hidden" name="userId" value="{{viewedUser._id}}" />
+          <button type="submit" class="fluid ui orange labeled icon button">
+            <i class="minus large icon"></i>
+            Stop following!
+          </button>
+        </form>
+      {{else}}
+        <form action="/followUser" method="post">
+          <input type="hidden" name="userId" value="{{viewedUser._id}}" />
+          <button type="submit" class="fluid ui orange labeled icon button">
+            <i class="plus large icon"></i>
+            Follow!
+          </button>
+        </form>
+      {{/if}}
+    </div>
+  {{/if}}
+</div>
