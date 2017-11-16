@@ -160,7 +160,7 @@ exports.followUser = {
       if (!followingsIncludeObjectId(foundUser, followUserId)) {
         foundUser.followings.push(followUserId);
         foundUser.save().then(result => {
-          reply.redirect('/home');
+          reply.redirect('/followings');
         });
       } else {
         console.log('Ignored duplicate user following request.');

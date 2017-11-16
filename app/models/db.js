@@ -5,7 +5,7 @@ mongoose.Promise = global.Promise;
 
 let dbURI = 'mongodb://localhost/tweeter';
 
-// let dbURI = 'mongodb://donationuser:donationuser@ds027338.mlab.com:27338/donation';
+// let dbURI = 'mongodb://tweeterUser:Tw33ter@ds259865.mlab.com:59865/tweeter';
 if (process.env.NODE_ENV === 'production') {
   dbURI = process.env.MONGOLAB_URI;
 }
