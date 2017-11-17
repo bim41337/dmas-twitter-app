@@ -1,6 +1,7 @@
 <div class="ui raised fluid form segment" id="tweet-form">
   <form action="/makeTweet" method="POST">
     <h3 class="ui header">Make a tweet!</h3>
+    <h5 class="ui header">Followers: {{followersCount}} <i class="twitter icon"></i></h5>
     <div class="ui top right attached label" id="tweet-label">0 / 140</div>
     <div class="field">
         <textarea name="message" maxlength="140" rows="3" id="tweet-message"></textarea>

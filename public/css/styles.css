@@ -13,3 +13,13 @@ article.tweet {
 #tweet-form {
     min-width: 20em;
 }
+
+i.icons i.loading {
+    animation-duration: 15s;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-direction: normal;
+    animation-fill-mode: none;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+}

@@ -125,17 +125,20 @@ exports.viewUser = {
         User.count({ followings: result.viewedUser._id }).then(followersCount => {
           result.viewedUser.followers = followersCount;
 
-          Tweet.find({ user: result.viewedUser }).sort('-creation').then(tweets => {
+          Tweet.find({ user: result.viewedUser })
+              .populate('user')
+              .sort('-creation')
+              .then(tweets => {
 
-            reply.view('view-user', {
-              title: titleViewUser,
-              user: result.currentUser,
-              viewedUser: result.viewedUser,
-              tweets: tweets,
-              isFollowed: followingsIncludeObjectId(result.currentUser, result.viewedUser._id),
-            });
+                reply.view('view-user', {
+                  title: titleViewUser,
+                  user: result.currentUser,
+                  viewedUser: result.viewedUser,
+                  tweets: tweets,
+                  isFollowed: followingsIncludeObjectId(result.currentUser, result.viewedUser._id),
+                });
 
-          });
+              });
 
         });
       });

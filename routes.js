@@ -17,6 +17,7 @@ module.exports = [
     // Registered routes
   { method: 'GET', path: '/home', config: Tweets.home },
   { method: 'GET', path: '/followings', config: Tweets.followings },
+  { method: 'GET', path: '/firehose', config: Tweets.firehose },
   { method: 'GET', path: '/settings', config: Users.viewSettings },
   { method: 'POST', path: '/settings', config: Users.updateSettings },
   { method: 'GET', path: '/logout', config: Users.logout },
