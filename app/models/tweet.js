@@ -9,6 +9,10 @@ const tweetSchema = mongoose.Schema({
     maxlength: 140,
     minlength: 1,
   },
+  image: {
+    data: mongoose.Schema.Types.Buffer,
+    contentType: mongoose.Schema.Types.String,
+  },
   creation: {
     type: mongoose.Schema.Types.Date,
     min: moment('2017-10-28'),

@@ -12,6 +12,13 @@ Handlebars.registerHelper('formatDate', datetime => {
     return '';
   }
 });
+Handlebars.registerHelper('formatImage', imageData => {
+  if (imageData) {
+    return imageData.toString('base64');
+  } else {
+    return '';
+  }
+});
 
 let server = new Hapi.Server();
 

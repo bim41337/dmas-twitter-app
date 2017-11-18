@@ -1,0 +1,5 @@
+{{#if image.data}}
+  <div class="ui medium bordered image">
+    <img alt="Tweet image" src="data:{{image.contentType}};base64,{{formatImage image.data}}"/>
+  </div>
+{{/if}}

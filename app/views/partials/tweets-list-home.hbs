@@ -1,20 +1,17 @@
 {{#if tweets}}
   {{#each tweets}}
     <article class="ui compact segment tweet">
-
       <h5 class="ui dividing header">
-        <strong>{{user.nickname}}</strong>
+        {{user.nickname}}
         <div class="sub header">
           {{formatDate creation}}
         </div>
       </h5>
-
       <a class="ui top right attached label tweet-remove" data-id="{{_id}}">
         <i class="orange remove icon"></i>
       </a>
-
-      {{message}}
-
+      <p>{{message}}</p>
+      {{> tweet-image }}
     </article>
   {{/each}}
   <script type="text/javascript">

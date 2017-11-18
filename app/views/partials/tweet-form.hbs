@@ -1,20 +1,31 @@
 <div class="ui raised fluid form segment" id="tweet-form">
-  <form action="/makeTweet" method="POST">
+  <form action="/makeTweet" method="POST" enctype="multipart/form-data">
     <h3 class="ui header">Make a tweet!</h3>
     <h5 class="ui header">Followers: {{followersCount}} <i class="twitter icon"></i></h5>
     <div class="ui top right attached label" id="tweet-label">0 / 140</div>
     <div class="field">
-        <textarea name="message" maxlength="140" rows="3" id="tweet-message"></textarea>
-      </div>
+      <textarea name="message" maxlength="140" rows="3" id="tweet-message">{{formData.message}}</textarea>
+    </div>
+    <div class="field">
+      <input type="file" name="tweetImg" id="tweet-img" accept="image/jpeg" />
+      <label>Max. 512 KB file size</label>
+    </div>
     <button class="ui orange disabled submit button" id="tweet-button">Share</button>
   </form>
+  <div class="ui error message" id="image-error-msg">
+    Image must be of type image/jpeg and not exceed 512 KB file size
+  </div>
+  <div class="ui segment" id="img-container" style="display: none">
+    <!-- Segment for displaying preview of uploaded user image -->
+  </div>
   {{> formerror }}
 </div>
 
 <script type="text/javascript">
+  const className = 'disabled';
+  const button = $('#tweet-button');
+
   $('#tweet-message').on('input', function () {
-    const className = 'disabled';
-    const button = $('#tweet-button');
     const label = $('#tweet-label');
     const inputLength = $(this).val().trim().length;
 
@@ -29,5 +40,39 @@
       $('#tweet-form form').submit();
       return false;
     }
+  });
+
+  $('#tweet-img').change(() => {
+    const imgInput = $('#tweet-img');
+    const imgContainer = $('#img-container');
+    const uploadedFile = imgInput[0].files[0];
+
+    imgInput.removeData('imageWidth');
+    imgInput.data('imageSize', uploadedFile.size);
+    imgContainer.hide().empty();
+    $('#image-error-msg').hide();
+
+    if (uploadedFile.type.match(/image\/jpeg/) && uploadedFile.size <= 524288) {
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        const imgElement = $('<img />').attr({ src: fileReader.result });
+        imgContainer.append(imgElement).show();
+      };
+      fileReader.readAsDataURL(uploadedFile);
+    }
+
+  });
+
+  $('#tweet-form').submit((evt) => {
+    let retVal = true;
+    if ($('#tweet-img').data('imageSize') > 524288) {
+      $('#image-error-msg').fadeIn('fast');
+      retVal = false;
+    }
+    if ($('#tweet-message').val().trim().length === 0) {
+      retVal = false;
+    }
+
+    return retVal;
   });
 </script>

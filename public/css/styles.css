@@ -14,6 +14,10 @@ article.tweet {
     min-width: 20em;
 }
 
+#img-container img {
+    max-width: 100%;
+}
+
 i.icons i.loading {
     animation-duration: 15s;
     animation-timing-function: linear;
