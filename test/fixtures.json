@@ -1,0 +1,53 @@
+{
+  "tweeterServiceHerokuUrl": "http://tweeter-bim41337.herokuapp.com",
+  "tweeterServiceLocalhostUrl": "http://localhost:4000",
+  "users": [
+    {
+      "nickname": "JamesH",
+      "email": "james@met.com",
+      "password": "secret"
+    },
+    {
+      "nickname": "KirkH",
+      "email": "kirk@met.com",
+      "password": "secret"
+    },
+    {
+      "nickname": "LarsU",
+      "email": "lars@met.com",
+      "password": "secret"
+    }
+  ],
+  "tweets": [
+    {
+      "message": "The new guy is finally here!",
+      "creation": "2017-10-31T03:03:02.000Z"
+    },
+    {
+      "message": "I kinda like it here ... although James and Lars really get loud sometimes",
+      "creation": "2017-11-07T22:54:00.000Z"
+    },
+    {
+      "message": "Maybe, there's an image here ...",
+      "creation": "2017-10-31T03:03:02.000Z"
+    }
+  ],
+  "newUser": {
+    "nickname": "RobT",
+    "email": "rob@met-n.com",
+    "password": "secreter"
+  },
+  "newUserFallback": {
+    "nickname": "CliffB",
+    "email": "cliff@met-rip.com",
+    "password": "master-secreter"
+  },
+  "newTweet": {
+    "message": "This is some new message text from probably a new guy",
+    "creation": "2017-11-01T23:01:02.000Z"
+  },
+  "newTweetFallback": {
+    "message": "They refused our album title 'From Life 'Til Leather' :O",
+    "creation": "2017-11-15T00:02:03.000Z"
+  }
+}
