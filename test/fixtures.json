@@ -3,6 +3,11 @@
   "tweeterServiceLocalhostUrl": "http://localhost:4000",
   "users": [
     {
+      "nickname": "InitialAdmin",
+      "email": "admin@user.de",
+      "password": "1234"
+    },
+    {
       "nickname": "JamesH",
       "email": "james@met.com",
       "password": "secret"

@@ -10,30 +10,34 @@ suite('User API tests', function () {
 
   let users = Fixtures.users;
   let newUser = Fixtures.newUser;
+  let tweetUser;
 
   const baseUrl = HEROKU_MODE ? Fixtures.tweeterServiceHerokuUrl
       : Fixtures.tweeterServiceLocalhostUrl;
   const tweeterService = new TweeterService(baseUrl);
+  const adminUser = Fixtures.users[0];
 
   beforeEach(function () {
-    tweeterService.deleteAllUsers();
+    tweeterService.login(adminUser);
+    tweetUser = tweeterService.createUser(Fixtures.newUser);
+    // tweeterService.deleteAllUsers();
   });
 
   afterEach(function () {
-    tweeterService.deleteAllUsers();
+    // tweeterService.deleteAllUsers();
+    tweeterService.deleteOneUser(tweetUser._id);
+    tweeterService.logout();
   });
 
   test('create a user', function () {
-    const returnedUser = tweeterService.createUser(newUser);
-    Assert(Lodash.some([returnedUser], newUser),
+    Assert(Lodash.some([tweetUser], newUser),
         'returnedUser must be a superset of newUser');
-    Assert.isDefined(returnedUser._id);
+    Assert.isDefined(tweetUser._id);
   });
 
   test('get user', function () {
-    const u1 = tweeterService.createUser(newUser);
-    const u2 = tweeterService.getOneUser(u1._id);
-    Assert.deepEqual(u1, u2);
+    const readUser = tweeterService.getOneUser(tweetUser._id);
+    Assert.deepEqual(tweetUser, readUser);
   });
 
   test('get invalid user', function () {
@@ -44,37 +48,28 @@ suite('User API tests', function () {
   });
 
   test('delete a user', function () {
-    const u1 = tweeterService.createUser(newUser);
-    Assert.isNotNull(tweeterService.getOneUser(u1._id));
-    tweeterService.deleteOneUser(u1._id);
-    Assert.isNull(tweeterService.getOneUser(u1._id));
+    Assert.isNotNull(tweeterService.getOneUser(tweetUser._id));
+    tweeterService.deleteOneUser(tweetUser._id);
+    Assert.isNull(tweeterService.getOneUser(tweetUser._id));
   });
 
   test('delete a user with tweets', function () {
-    const mainUser = tweeterService.createUser(newUser);
-    const secondUser = tweeterService.createUser(Fixtures.newUserFallback);
     tweeterService.deleteAllTweets();
     for (let tmpTweet of Fixtures.tweets) {
-      tmpTweet.user = mainUser._id;
+      tmpTweet.user = tweetUser._id;
       tweeterService.createTweet(tmpTweet);
     }
-    let additionalTweet = Fixtures.newTweetFallback;
-    additionalTweet.user = secondUser._id;
-    additionalTweet = tweeterService.createTweet(additionalTweet);
 
-    Assert.lengthOf(tweeterService.getAllUsers(), 2);
-    Assert.lengthOf(tweeterService.getAllTweetsForUser(mainUser._id), Fixtures.tweets.length);
-    Assert.lengthOf(tweeterService.getAllTweetsForUser(secondUser._id), 1);
-    Assert.lengthOf(tweeterService.getAllTweets(), Fixtures.tweets.length + 1);
+    Assert.lengthOf(tweeterService.getAllTweetsForUser(tweetUser._id), Fixtures.tweets.length);
 
-    tweeterService.deleteOneUserAndTweets(mainUser._id);
-    Assert.isNull(tweeterService.getOneUser(mainUser._id));
-    Assert.lengthOf(tweeterService.getAllTweets(), 1);
-    Assert(Lodash.some([tweeterService.getAllTweetsForUser(secondUser._id)[0]], additionalTweet),
-        'Last remaining tweet must be a superset of the Fixture-Fallback-Tweet');
+    tweeterService.deleteOneUserAndTweets(tweetUser._id);
+    Assert.isNull(tweeterService.getOneUser(tweetUser._id));
+    Assert.isEmpty(tweeterService.getAllTweets());
+
     tweeterService.deleteAllTweets();
   });
 
+  /*
   test('delete all users', function () {
     for (let tmpUser of users) {
       tweeterService.createUser(tmpUser);
@@ -84,6 +79,7 @@ suite('User API tests', function () {
     Assert.isEmpty(tweeterService.getAllUsers());
   });
 
+  /*
   test('get all users', function () {
     for (let tmpUser of users) {
       tweeterService.createUser(tmpUser);
@@ -109,5 +105,6 @@ suite('User API tests', function () {
     const allUsers = tweeterService.getAllUsers();
     Assert.isEmpty(allUsers);
   });
+  */
 
 });

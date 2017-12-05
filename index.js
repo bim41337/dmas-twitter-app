@@ -2,6 +2,8 @@
 
 const Hapi = require('hapi');
 const Handlebars = require('handlebars');
+const CorsHeaders = require('hapi-cors-headers');
+const Utils = require('./app/api/utils');
 require('./app/models/db');
 
 Handlebars.registerHelper('formatDate', datetime => {
@@ -24,7 +26,7 @@ let server = new Hapi.Server();
 
 server.connection({ port: process.env.PORT || 4000 });
 
-server.register([require('inert'), require('vision'), require('hapi-auth-cookie')], err => {
+server.register([require('inert'), require('vision'), require('hapi-auth-cookie'), require('hapi-auth-jwt2')], err => {
 
   if (err) {
     throw err;
@@ -49,11 +51,17 @@ server.register([require('inert'), require('vision'), require('hapi-auth-cookie'
     ttl: 24 * 60 * 60 * 1000,
     redirectTo: '/login',
   });
+  server.auth.strategy('jwt', 'jwt', {
+    key: Utils.tweeterPw,
+    validateFunc: Utils.validate,
+    verifyOptions: { algorithms: ['HS256'] },
+  });
 
   server.auth.default({
     strategy: 'standard',
   });
 
+  server.ext('onPreResponse', CorsHeaders);
   server.route(require('./routes'));
   server.route(require('./routes-api'));
   server.start((err) => {

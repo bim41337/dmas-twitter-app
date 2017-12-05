@@ -6,7 +6,9 @@ const Boom = require('boom');
 
 exports.find = {
 
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
 
   handler: function (request, reply) {
     Tweet.find({}).then(tweets => {
@@ -20,7 +22,9 @@ exports.find = {
 
 exports.findOne = {
 
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
 
   handler: function (request, reply) {
     Tweet.findById(request.params.id).then(tweet => {
@@ -38,7 +42,9 @@ exports.findOne = {
 
 exports.findAllForUser = {
 
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
 
   handler: function (request, reply) {
     const User = require('../models/user');
@@ -59,7 +65,9 @@ exports.findAllForUser = {
 
 exports.create = {
 
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
 
   validate: {
 
@@ -99,7 +107,9 @@ exports.create = {
 
 exports.deleteAll = {
 
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
 
   handler: function (request, reply) {
     Tweet.remove({}).then(err => {
@@ -113,7 +123,9 @@ exports.deleteAll = {
 
 exports.deleteOne = {
 
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
 
   handler: function (request, reply) {
     Tweet.findByIdAndRemove(request.params.id).then(tweet => {
@@ -130,7 +142,9 @@ exports.deleteOne = {
 
 exports.deleteAllForUser = {
 
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
 
   handler: function (request, reply) {
     const User = require('../models/user');

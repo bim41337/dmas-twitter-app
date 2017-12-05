@@ -30,6 +30,14 @@ class TweeterService {
     return this.httpService.delete('/api/users/' + id);
   }
 
+  login(user) {
+    return this.httpService.setAuth('/api/users/authenticate', user);
+  }
+
+  logout() {
+    this.httpService.clearAuth();
+  }
+
   // ### TWEETS ###
 
   getAllTweets() {
