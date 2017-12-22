@@ -5,10 +5,11 @@ module.exports = [
 
   // Users
   { method: 'GET', path: '/api/users', config: UsersApi.find },
-  { method: 'GET', path: '/api/users/{id}', config: UsersApi.findOne },
   { method: 'POST', path: '/api/users', config: UsersApi.create },
-  { method: 'DELETE', path: '/api/users/{id}', config: UsersApi.deleteOne },
   { method: 'DELETE', path: '/api/users', config: UsersApi.deleteAll },
+  { method: 'GET', path: '/api/users/{id}', config: UsersApi.findOne },
+  { method: 'PUT', path: '/api/users/{id}', config: UsersApi.changeUser },
+  { method: 'DELETE', path: '/api/users/{id}', config: UsersApi.deleteOne },
   { method: 'POST', path: '/api/users/authenticate', config: UsersApi.authenticate },
 
   // Tweets

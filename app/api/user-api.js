@@ -117,6 +117,40 @@ exports.deleteOne = {
 
 };
 
+exports.changeUser = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    const editedUser = request.payload;
+    const userId = request.params.id;
+
+    User.findById(userId).then(user => {
+      if (!user) {
+        throw new Error('User could not be found in database');
+      }
+
+      user.nickname = editedUser.nickname;
+      user.email = editedUser.email;
+      user.password = editedUser.password;
+
+      user.save().then(saveResultUser => {
+        if (!saveResultUser) {
+          reply(Boom.badImplementation('Error updating user'));
+        } else {
+          reply(saveResultUser).code(200);
+        }
+      });
+    }).catch(err => {
+      console.log(err);
+      reply(Boom.notFound('User not found for change'));
+    });
+  },
+
+};
+
 exports.authenticate = {
 
   auth: false,

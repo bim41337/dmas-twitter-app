@@ -53,7 +53,7 @@ exports.findAllForUser = {
         throw Boom.notFound('User for new tweet not found');
       }
 
-      Tweet.find({ user: user._id }).then(tweets => {
+      Tweet.find({ user: user._id }).populate('user').then(tweets => {
         reply(tweets);
       });
     }).catch(err => {
