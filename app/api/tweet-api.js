@@ -11,7 +11,7 @@ exports.find = {
   },
 
   handler: function (request, reply) {
-    Tweet.find({}).then(tweets => {
+    Tweet.find({}).sort('-creation').then(tweets => {
       reply(tweets);
     }).catch(err => {
       reply(Boom.badImplementation('error accessing db'));
@@ -48,7 +48,7 @@ exports.findAllForUser = {
 
   handler: function (request, reply) {
     const User = require('../models/user');
-    User.findById(request.params.id).then(user => {
+    User.findById(request.params.id).sort('-creation').then(user => {
       if (!user) {
         throw Boom.notFound('User for new tweet not found');
       }
@@ -67,24 +67,6 @@ exports.create = {
 
   auth: {
     strategy: 'jwt',
-  },
-
-  validate: {
-
-    payload: {
-      message: Joi.string().min(1).max(140).required(),
-      creation: Joi.string().isoDate().required(),
-      user: Joi.string().hex().required(),
-    },
-
-    failAction: function (request, reply, source, error) {
-      reply(Boom.badData('Tweet is not well-formatted', error));
-    },
-
-    options: {
-      abortEarly: false,
-    },
-
   },
 
   handler: function (request, reply) {
