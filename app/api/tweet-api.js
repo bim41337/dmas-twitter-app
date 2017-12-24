@@ -76,6 +76,10 @@ exports.create = {
         throw Boom.notFound('User for new tweet not found');
       }
 
+      let tweetContent = request.payload;
+      if (tweetContent.image) {
+        tweetContent.image.data = Buffer.from(tweetContent.image.data);
+      }
       const tweet = new Tweet(request.payload);
       tweet.save().then(newTweet => {
         reply(newTweet).code(201);
