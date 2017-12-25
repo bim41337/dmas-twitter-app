@@ -11,7 +11,7 @@ exports.find = {
   },
 
   handler: function (request, reply) {
-    Tweet.find({}).sort('-creation').then(tweets => {
+    Tweet.find({}).sort('-creation').populate('user').then(tweets => {
       reply(tweets);
     }).catch(err => {
       reply(Boom.badImplementation('error accessing db'));
@@ -48,16 +48,44 @@ exports.findAllForUser = {
 
   handler: function (request, reply) {
     const User = require('../models/user');
-    User.findById(request.params.id).sort('-creation').then(user => {
+    User.findById(request.params.id).then(user => {
       if (!user) {
-        throw Boom.notFound('User for new tweet not found');
+        throw Boom.notFound('User not found');
       }
 
-      Tweet.find({ user: user._id }).populate('user').then(tweets => {
+      Tweet.find({ user: user._id }).sort('-creation').populate('user').then(tweets => {
         reply(tweets);
       });
     }).catch(err => {
-      reply(Boom.isBoom(err) ? err : Boom.badImplementation('Error creating new tweet'));
+      reply(Boom.isBoom(err) ? err : Boom.badImplementation('Error fetching tweets for user'));
+    });
+  },
+
+};
+
+exports.findFollowingsForUser = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    const User = require('../models/user');
+    User.findById(request.params.id).then(user => {
+      if (!user) {
+        throw Boom.notFound('User not found');
+      }
+
+      Tweet.find({ user: { $in: user.followings } })
+          .populate('user')
+          .sort('-creation')
+          .then(tweets => {
+
+            reply(tweets);
+
+          });
+    }).catch(err => {
+      reply(Boom.isBoom(err) ? err : Boom.badImplementation('Error fetching followings for user'));
     });
   },
 

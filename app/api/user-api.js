@@ -151,6 +151,27 @@ exports.changeUser = {
 
 };
 
+exports.findFollowingsForUser = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    const User = require('../models/user');
+    User.findById(request.params.id).populate('followings').then(user => {
+      if (!user) {
+        throw Boom.notFound('User not found');
+      }
+
+      reply(user.followings);
+    }).catch(err => {
+      reply(Boom.isBoom(err) ? err : Boom.badImplementation('Error fetching followings for user'));
+    });
+  },
+
+};
+
 exports.authenticate = {
 
   auth: false,
