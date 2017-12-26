@@ -11,6 +11,8 @@ module.exports = [
   { method: 'PUT', path: '/api/users/{id}', config: UsersApi.changeUser },
   { method: 'DELETE', path: '/api/users/{id}', config: UsersApi.deleteOne },
   { method: 'GET', path: '/api/users/{id}/followings', config: UsersApi.findFollowingsForUser },
+  { method: 'POST', path: '/api/users/{id}/followings', config: UsersApi.addFollowing },
+  { method: 'PUT', path: '/api/users/{id}/followings', config: UsersApi.removeFollowing },
   { method: 'POST', path: '/api/users/authenticate', config: UsersApi.authenticate },
 
   // Tweets

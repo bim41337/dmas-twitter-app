@@ -25,12 +25,12 @@
   ],
   "tweets": [
     {
-      "message": "The new guy is finally here!",
-      "creation": "2017-10-31T03:03:02.000Z"
-    },
-    {
       "message": "I kinda like it here ... although James and Lars really get loud sometimes",
       "creation": "2017-11-07T22:54:00.000Z"
+    },
+    {
+      "message": "The new guy is finally here!",
+      "creation": "2017-10-31T04:03:02.000Z"
     },
     {
       "message": "Maybe, there's an image here ...",

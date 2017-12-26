@@ -88,7 +88,7 @@ suite('Tweet API tests', function () {
     const allTweetsForUser = tweeterService.getAllTweetsForUser(tweetUser._id);
     Assert.lengthOf(allTweetsForUser, tweets.length);
     for (let i = 0; i < tweets.length; i++) {
-      Assert(Lodash.some([allTweetsForUser[i]], tweets[i]),
+      Assert(Lodash.isEqual(allTweetsForUser[i].message, tweets[i].message),
           'Every tweet created for the user must be a superset of the Fixture-Tweet');
     }
   });
@@ -113,7 +113,7 @@ suite('Tweet API tests', function () {
 
     const allTweets = tweeterService.getAllTweets();
     for (let i = 0; i < tweets.length; i++) {
-      Assert(Lodash.some([allTweets[i]], tweets[i]),
+      Assert(Lodash.isEqual(allTweets[i].message, tweets[i].message),
           'Every tweet created must be a superset of the Fixture-Tweet');
     }
   });

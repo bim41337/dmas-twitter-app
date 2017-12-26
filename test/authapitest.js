@@ -1,28 +1,30 @@
 'use strict';
 
+const HEROKU_MODE = false;
 const Assert = require('chai').assert;
-const DonationService = require('./donation-service');
+const TweeterService = require('./tweeter-service');
 const Fixtures = require('./fixtures.json');
 const Utils = require('../app/api/utils.js');
 
-suite('Candidate API tests', function () {
+suite('Authentication API test', function () {
+
+  const baseUrl = HEROKU_MODE ? Fixtures.tweeterServiceHerokuUrl
+      : Fixtures.tweeterServiceLocalhostUrl;
+  const service = new TweeterService(baseUrl);
 
   let users = Fixtures.users;
-  let newUser = Fixtures.newUser;
-
-  const DonationService = new DonationService(Fixtures.donationService);
 
   test('login-logout', function () {
-    let returnedCandidates = DonationService.getCandidates();
-    Assert.isNull(returnedCandidates);
+    let returnedUsers = service.getAllUsers();
+    Assert.isNull(returnedUsers);
 
-    const response = DonationService.login(users[0]);
-    returnedCandidates = DonationService.getCandidates();
-    Assert.isNotNull(returnedCandidates);
+    service.login(users[0]);
+    returnedUsers = service.getAllUsers();
+    Assert.isNotNull(returnedUsers);
 
-    DonationService.logout();
-    returnedCandidates = DonationService.getCandidates();
-    Assert.isNull(returnedCandidates);
+    service.logout();
+    returnedUsers = service.getAllUsers();
+    Assert.isNull(returnedUsers);
   });
 
 });

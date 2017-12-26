@@ -16,7 +16,7 @@ const objectIdEquals = function (objId1, objId2) {
   const userId1 = (objId1 instanceof ObjectID) ? objId1 : new ObjectID(objId1);
   const userId2 = (objId2 instanceof ObjectID) ? objId2 : new ObjectID(objId2);
   return userId1.equals(userId2);
-}
+};
 const followingsIncludeObjectId = function (user, objectIdParam) {
   const userId = (objectIdParam instanceof ObjectID) ? objectIdParam : new ObjectID(objectIdParam);
   return Lodash.find(user.followings, objId => objectIdEquals(objId, userId)) !== undefined;

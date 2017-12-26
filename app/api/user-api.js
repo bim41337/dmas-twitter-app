@@ -28,14 +28,16 @@ exports.findOne = {
   },
 
   handler: function (request, reply) {
-    User.findOne({ _id: request.params.id }).then(user => {
-      if (user != null) {
-        reply(user);
-      } else {
-        reply(Boom.notFound('id not found'));
+    User.findById(request.params.id).then(user => {
+      if (!user) {
+        throw Boom.notFound('id not found');
       }
+
+      User.count({ followings: user._id }).then(followersCount => {
+        reply({ user, followersCount });
+      });
     }).catch(err => {
-      reply(Boom.notFound('id not found'));
+      reply(Boom.isBoom(err) ? err : Boom.badImplementation('Error fetching user'));
     });
   },
 
@@ -167,6 +169,63 @@ exports.findFollowingsForUser = {
       reply(user.followings);
     }).catch(err => {
       reply(Boom.isBoom(err) ? err : Boom.badImplementation('Error fetching followings for user'));
+    });
+  },
+
+};
+
+exports.addFollowing = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    User.findById(request.params.id).then(foundUser => {
+      if (!foundUser) {
+        throw new Error('User could not be found in database');
+      }
+
+      const followUserId = request.payload.follId;
+      if (!Utils.followingsIncludeObjectId(foundUser, followUserId)) {
+        foundUser.followings.push(followUserId);
+        foundUser.save().then(saveResultUser => {
+          if (!saveResultUser) {
+            reply(Boom.badImplementation('Error updating user'));
+          } else {
+            reply(saveResultUser).code(200);
+          }
+        });
+      }
+    }).catch(err => {
+      reply(Boom.isBoom(err) ? err : Boom.badImplementation('Error adding following for user'));
+    });
+  },
+
+};
+
+exports.removeFollowing = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    const userId = request.params.id;
+    User.findById(userId).then(foundUser => {
+      if (!foundUser) {
+        throw new Error('User could not be found in database');
+      }
+
+      const followUserId = request.payload.follId;
+      if (Utils.followingsIncludeObjectId(foundUser, followUserId)) {
+        User.updateOne({ _id: userId }, { $pullAll: { followings: [followUserId] } })
+            .then(result => {
+              reply(result).code(200);
+            });
+      }
+    }).catch(err => {
+      reply(Boom.isBoom(err) ? err : Boom.badImplementation('Error removing following for user'));
     });
   },
 
