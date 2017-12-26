@@ -250,3 +250,36 @@ exports.authenticate = {
   },
 
 };
+
+exports.countUsers = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    User.count({}).then(count => {
+      reply({ count }).code(200);
+    }).catch(err => {
+      reply(Boom.internal('Error getting user stats'));
+    });
+  },
+
+};
+
+exports.countConnections = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    User.find({}).then(allUsers => {
+      let connCount = allUsers.reduce((acc, usr) => acc + usr.followings.length, 0);
+      reply({ count: connCount }).code(200);
+    }).catch(err => {
+      reply(Boom.internal('Error getting connection stats'));
+    });
+  },
+
+};

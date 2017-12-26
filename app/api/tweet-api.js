@@ -178,3 +178,19 @@ exports.deleteAllForUser = {
   },
 
 };
+
+exports.countTweets = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    Tweet.count({}).then(count => {
+      reply({ count }).code(200);
+    }).catch(err => {
+      reply(Boom.internal('Error getting tweet stats'));
+    });
+  },
+
+};

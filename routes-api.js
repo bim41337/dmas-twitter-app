@@ -23,6 +23,15 @@ module.exports = [
   { method: 'DELETE', path: '/api/tweets/{id}', config: TweetsApi.deleteOne },
   { method: 'GET', path: '/api/tweets/user/{id}', config: TweetsApi.findAllForUser },
   { method: 'DELETE', path: '/api/tweets/user/{id}', config: TweetsApi.deleteAllForUser },
-  { method: 'GET', path: '/api/tweets/user/{id}/followings', config: TweetsApi.findFollowingsForUser },
+  {
+    method: 'GET',
+    path: '/api/tweets/user/{id}/followings',
+    config: TweetsApi.findFollowingsForUser,
+  },
+
+  // Stats
+  { method: 'GET', path: '/api/stats/users', config: UsersApi.countUsers },
+  { method: 'GET', path: '/api/stats/connections', config: UsersApi.countConnections },
+  { method: 'GET', path: '/api/stats/tweets', config: TweetsApi.countTweets },
 
 ];
