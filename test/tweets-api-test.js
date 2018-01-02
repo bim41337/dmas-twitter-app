@@ -18,6 +18,7 @@ suite('Tweet API tests', function () {
   const adminUser = Fixtures.users[0];
 
   beforeEach(function () {
+    tweeterService.createUser(adminUser);
     tweeterService.login(adminUser);
     tweetUser = tweeterService.createUser(Fixtures.newUser);
     newTweet.user = tweetUser._id;
@@ -25,8 +26,8 @@ suite('Tweet API tests', function () {
   });
 
   afterEach(function () {
-    tweeterService.deleteOneUser(tweetUser._id);
     tweeterService.deleteAllTweets();
+    tweeterService.deleteAllUsers();
     tweeterService.logout();
   });
 
@@ -121,6 +122,25 @@ suite('Tweet API tests', function () {
   test('get all tweets empty', function () {
     const allTweets = tweeterService.getAllTweets();
     Assert.lengthOf(allTweets, 0);
+  });
+
+  test('find all following tweets for user', function () {
+    let response = tweeterService.getAllTweets();
+    Assert.isEmpty(response);
+    response = tweeterService.getAllFollowingTweetsForUser(tweetUser._id);
+    Assert.isEmpty(response);
+
+    tweeterService.createTweet(newTweet);
+    let fallbackUser = tweeterService.createUser(Fixtures.newUserFallback);
+    let fallbackTweet = Fixtures.newTweetFallback;
+    fallbackTweet.user = fallbackUser._id;
+    fallbackTweet = tweeterService.createTweet(fallbackTweet);
+    tweeterService.addFollowingForUser(tweetUser._id, fallbackUser._id);
+    response = tweeterService.getAllTweets();
+    Assert.lengthOf(response, 2);
+    response = tweeterService.getAllFollowingTweetsForUser(tweetUser._id);
+    Assert.lengthOf(response, 1);
+    Assert.equal(response[0].message, fallbackTweet.message);
   });
 
 });

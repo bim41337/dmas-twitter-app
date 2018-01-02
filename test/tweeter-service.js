@@ -68,6 +68,10 @@ class TweeterService {
     return this.httpService.get('/api/tweets/user/' + userId);
   }
 
+  getAllFollowingTweetsForUser(userId) {
+    return this.httpService.get(`/api/tweets/user/${userId}/followings`);
+  }
+
   createTweet(newTweet) {
     return this.httpService.post('/api/tweets', newTweet);
   }
