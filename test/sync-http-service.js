@@ -48,6 +48,17 @@ class SyncHttpService {
     return returnedObj;
   }
 
+  put(url, obj) {
+    let returnedObj = null;
+    let res = Request('PUT', this.baseUrl + url, { json: obj, headers: this.authHeadder });
+
+    if (res.statusCode < 300) {
+      returnedObj = JSON.parse(res.getBody('utf8'));
+    }
+
+    return returnedObj;
+  }
+
   delete(url) {
     let res = Request('DELETE', this.baseUrl + url, { headers: this.authHeadder });
     return res.statusCode;

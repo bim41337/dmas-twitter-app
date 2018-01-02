@@ -30,6 +30,22 @@ class TweeterService {
     return this.httpService.delete('/api/users/' + id);
   }
 
+  changeOneUser(id, changedUser) {
+    return this.httpService.put('/api/users/' + id, changedUser);
+  }
+
+  addFollowingForUser(id, follId) {
+    return this.httpService.post(`/api/users/${id}/followings`, { follId });
+  }
+
+  getFollowingsForUser(id) {
+    return this.httpService.get(`/api/users/${id}/followings`);
+  }
+
+  removeFollowingForUser(id, follId) {
+    return this.httpService.put(`/api/users/${id}/followings`, { follId });
+  }
+
   login(user) {
     return this.httpService.setAuth('/api/users/authenticate', user);
   }

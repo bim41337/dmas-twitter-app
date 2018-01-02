@@ -16,16 +16,16 @@ suite('User API tests', function () {
       : Fixtures.tweeterServiceLocalhostUrl;
   const tweeterService = new TweeterService(baseUrl);
   const adminUser = Fixtures.users[0];
+  const testUsersLength = 2;
 
   beforeEach(function () {
+    tweeterService.createUser(adminUser);
     tweeterService.login(adminUser);
-    tweetUser = tweeterService.createUser(Fixtures.newUser);
-    // tweeterService.deleteAllUsers();
+    tweetUser = tweeterService.createUser(newUser);
   });
 
   afterEach(function () {
-    // tweeterService.deleteAllUsers();
-    tweeterService.deleteOneUser(tweetUser._id);
+    tweeterService.deleteAllUsers();
     tweeterService.logout();
   });
 
@@ -36,8 +36,8 @@ suite('User API tests', function () {
   });
 
   test('get user', function () {
-    const readUser = tweeterService.getOneUser(tweetUser._id);
-    Assert.deepEqual(tweetUser, readUser);
+    const response = tweeterService.getOneUser(tweetUser._id);
+    Assert(Lodash.some([tweetUser], response.user), 'Read user must be a superset of fixtures user');
   });
 
   test('get invalid user', function () {
@@ -69,24 +69,22 @@ suite('User API tests', function () {
     tweeterService.deleteAllTweets();
   });
 
-  /*
   test('delete all users', function () {
     for (let tmpUser of users) {
       tweeterService.createUser(tmpUser);
     }
-    Assert.lengthOf(tweeterService.getAllUsers(), users.length);
     tweeterService.deleteAllUsers();
-    Assert.isEmpty(tweeterService.getAllUsers());
+    let allUsers = tweeterService.getAllUsers();
+    Assert.isNull(allUsers);
   });
 
-  /*
   test('get all users', function () {
     for (let tmpUser of users) {
       tweeterService.createUser(tmpUser);
     }
 
     const allUsers = tweeterService.getAllUsers();
-    Assert.lengthOf(allUsers, users.length);
+    Assert.lengthOf(allUsers, users.length + testUsersLength);
   });
 
   test('get users detail', function () {
@@ -96,15 +94,66 @@ suite('User API tests', function () {
 
     const allUsers = tweeterService.getAllUsers();
     for (let i = 0; i < users.length; i++) {
-      Assert(Lodash.some([allUsers[i]], users[i]),
-          'Every user created must be a superset of the Fixture-User');
+      const currentUser = Lodash.find(allUsers, usr => usr.email === users[i].email);
+      Assert(Lodash.some([currentUser], users[i]),
+          'Every user created must be part of the returned users');
     }
   });
 
-  test('get all users empty', function () {
-    const allUsers = tweeterService.getAllUsers();
-    Assert.isEmpty(allUsers);
+  test('change a user', function () {
+    let response = tweeterService.getOneUser(tweetUser._id);
+    Assert(Lodash.some([response.user], tweetUser), 'Read user differs from unchanged test user');
+
+    tweetUser.password = '12345';
+    tweeterService.changeOneUser(tweetUser._id, tweetUser);
+
+    response = tweeterService.getOneUser(tweetUser._id);
+    Assert.equal(response.user.password, tweetUser.password);
   });
-  */
+
+  test('add followings entry for user', function () {
+    let response = tweeterService.getOneUser(tweetUser._id);
+    Assert.isEmpty(response.user.followings);
+
+    let userForFollowings = tweeterService.createUser(Fixtures.newUserFallback);
+    Assert(Lodash.some([userForFollowings], Fixtures.newUserFallback),
+        'New user for followings was not set up matching the fixtures fallback user');
+    tweeterService.addFollowingForUser(tweetUser._id, userForFollowings._id);
+
+    response = tweeterService.getOneUser(tweetUser._id);
+    Assert.isNotEmpty(response.user.followings);
+  });
+
+  test('get followings for user', function () {
+    let response = tweeterService.getOneUser(tweetUser._id);
+    Assert.isEmpty(response.user.followings);
+
+    let userForFollowings = tweeterService.createUser(Fixtures.newUserFallback);
+    Assert(Lodash.some([userForFollowings], Fixtures.newUserFallback),
+        'New user for followings was not set up matching the fixtures fallback user');
+    tweeterService.addFollowingForUser(tweetUser._id, userForFollowings._id);
+
+    response = tweeterService.getFollowingsForUser(tweetUser._id);
+    Assert.lengthOf(response, 1);
+    Assert(Lodash.some([response[0]], Fixtures.newUserFallback),
+        'User read from followings does not match fixtures fallback user');
+  });
+
+  test('remove following entry for user', function () {
+    let response = tweeterService.getOneUser(tweetUser._id);
+    Assert.isEmpty(response.user.followings);
+
+    let userForFollowings = tweeterService.createUser(Fixtures.newUserFallback);
+    Assert(Lodash.some([userForFollowings], Fixtures.newUserFallback),
+        'New user for followings was not set up matching the fixtures fallback user');
+    tweeterService.addFollowingForUser(tweetUser._id, userForFollowings._id);
+
+    response = tweeterService.getFollowingsForUser(tweetUser._id);
+    Assert.lengthOf(response, 1);
+
+    tweeterService.removeFollowingForUser(tweetUser._id, userForFollowings._id);
+    response = tweeterService.getOneUser(tweetUser._id);
+    Assert.isEmpty(response.user.followings);
+  });
 
 });
